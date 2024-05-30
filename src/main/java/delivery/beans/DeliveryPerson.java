@@ -6,9 +6,9 @@ public class DeliveryPerson {
 	private static int deliveryPersonIdNext = 1;
 	private String name;
 	private boolean available = true;
-	private String deliveryType;
+	private DeliveryType deliveryType;
 	
-	public DeliveryPerson(String name, String deliveryType) {
+	public DeliveryPerson(String name, DeliveryType deliveryType) {
 		super();
 		this.deliveryPersonId = deliveryPersonIdNext;
 		DeliveryPerson.deliveryPersonIdNext++;
@@ -37,13 +37,15 @@ public class DeliveryPerson {
 		this.available = available;
 	}
 	
-	public String getDeliveryType() {
+	
+	public DeliveryType getDeliveryType() {
 		return deliveryType;
 	}
 
-	public void setDeliveryType(String deliveryType) {
+	public void setDeliveryType(DeliveryType deliveryType) {
 		this.deliveryType = deliveryType;
 	}
+
 
 	@Override
 	public String toString() {

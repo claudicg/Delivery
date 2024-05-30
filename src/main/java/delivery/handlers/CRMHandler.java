@@ -5,6 +5,7 @@ import java.util.Scanner;
 import delivery.beans.Customer;
 import delivery.beans.DeliveryPerson;
 import delivery.beans.Order;
+import delivery.beans.Product;
 import delivery.main.DataTest;
 import delivery.utils.Validations;
 
@@ -22,22 +23,27 @@ public class CRMHandler {
 
 	public void runDelivery() {
 		
-		loadTestData();
-		
-		String menuOption = "";
-		do {
-			showMainMenu();
+		try {
+			loadTestData();
 			
+			String menuOption = "";
 			do {
-				printText(TextMenuHandler.getChooseAnOption());
-				menuOption = readInput().trim();
-			}while(!Validations.validateMenuOption(menuOption));
+				showMainMenu();
+				
+				do {
+					printText(TextMenuHandler.getChooseAnOption());
+					menuOption = readInput().trim();
+				}while(!Validations.validateMenuOption(menuOption));
+				
+				processOption(menuOption);
+				
+			}while(!menuOption.equals("0"));
 			
-			processOption(menuOption);
-			
-		}while(!menuOption.equals("0"));
-		
-		closeScanner();
+		}catch(Exception e) {
+			printText("" + e);
+		}finally {
+			closeScanner();
+		}
 	}
 	 
 	
@@ -70,8 +76,6 @@ public class CRMHandler {
 				break;
 			case "0":
 				printText(TextMenuHandler.getExitMessage());
-				break;
-			default:
 				break;
 		}
 			
@@ -121,16 +125,16 @@ public class CRMHandler {
 				productOption = readInput().trim();
 			}while(!Validations.validateMenuOption(productOption));
 			
-			if(productOption.equals("0") && order.getProductNames().isEmpty()) {
+			if(productOption.equals("0") && order.getProducts().isEmpty()) {
 				printText(TextMenuHandler.getAddProductsMessage());
 				productOption = "";
 			}else {
-				String productName = orderManager.getProductName(productOption);
+				Product product = orderManager.getProduct(productOption);
 				
-				if(!productName.equals("")) {
-					orderManager.addProductName(order, productName);
+				if(product != null) {
+					orderManager.addProduct(order, product);
 					
-					double productUnitAmount = orderManager.getUnitAmount(productName);
+					double productUnitAmount = orderManager.getUnitAmount(product);
 					orderManager.recalculateAmount(order, productUnitAmount);
 					System.out.println(order.toString());
 				}

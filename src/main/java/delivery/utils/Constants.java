@@ -2,11 +2,6 @@ package delivery.utils;
 
 public class Constants {
 	
-	public class DeliveryType	{
-		public static final String ON_FOOT = "Delivery on foot is free.\n";
-		public static final String BICYCLE = "It includes a one percent total amount charge for bicycle delivery.\n";
-		public static final String MOTORCYCLE = "It includes a two percent total amount charge for motorcycle delivery.\n";
-	}
 	
 	public class Exceptions	{
 		public static final String DELIVERY_PERSON = " There aren't any delivery persons available.\n"

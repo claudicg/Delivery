@@ -5,9 +5,9 @@ import java.util.List;
 
 import delivery.beans.Customer;
 import delivery.beans.DeliveryPerson;
+import delivery.beans.DeliveryType;
 import delivery.beans.Order;
-import delivery.enums.DeliveryTypeEnum;
-import delivery.enums.ProductEnum;
+import delivery.beans.Product;
 import delivery.exceptions.DeliveryPersonException;
 import delivery.utils.Constants;
 import delivery.utils.Utils;
@@ -91,61 +91,47 @@ public class OrderManager {
 		return new Order(customer, deliveryPerson);
 	}
 	
-	@SuppressWarnings("static-access")
+	
 	public Customer findCustomer(int customerId) {
 		
-		Customer customer = null;
-		for(int i = 0; i < customers.size(); i++) {
-			if(customerId == customers.get(i).getCustomerId()) {
-				customer = customers.get(i);
-				break;
-			}
-		}
-		return customer;
+		 return customers.stream()
+						 .filter(customer -> customerId == customer.getCustomerId())
+						 .findFirst()
+		                 .orElse(null);
+		
 	}
 	
-	public String getProductName(String productOption) {
+	public Product getProduct(String productOption) {
 		
-		 String productName = "";
+		 Product product = null;
 		 
 		 switch(productOption) {
 		 	case "1" :
-		 		productName = ProductEnum.BURRITO.getName();
+		 		product = Product.BURRITO;
 		 		break;
 		 	case "2" :
-		 		productName = ProductEnum.HAMBURGUER.getName();
+		 		product = Product.HAMBURGUER;
 		 		break;
 		 	case "3" :
-		 		productName = ProductEnum.KEBAB.getName();
+		 		product = Product.KEBAB;
 		 		break;
 		 	case "4" :
-		 		productName = ProductEnum.PIZZA.getName();
-		 		break;
-		 	default:
+		 		product = Product.PIZZA;
 		 		break;
 		 }
-		return productName;
+		return product;
 	}
 	
 	
-	public void addProductName(Order order, String productName) {
+	public void addProduct(Order order, Product product) {
 		
-		order.getProductNames().add(productName);
+		order.getProducts().add(product);
 	}
 	
-	public double getUnitAmount(String productName) {
+	public double getUnitAmount(Product product) {
 		
-		double amount = 0;
+		double amount = product.getPrice();
 		
-		if(productName.equalsIgnoreCase(ProductEnum.BURRITO.getName())){
-			amount = ProductEnum.BURRITO.getPrice();
-		}else if(productName.equalsIgnoreCase(ProductEnum.HAMBURGUER.getName())) {
-			amount = ProductEnum.HAMBURGUER.getPrice();
-		}else if(productName.equalsIgnoreCase(ProductEnum.KEBAB.getName())) {
-			amount = ProductEnum.KEBAB.getPrice();
-		}else if(productName.equalsIgnoreCase(ProductEnum.PIZZA.getName())) {
-			amount = ProductEnum.PIZZA.getPrice();
-		}
 		
 		return amount;
 	}
@@ -157,7 +143,7 @@ public class OrderManager {
 	
 	public String calculateDeliveryCharge(Order order) {
 		
-		String deliveryType = order.getDeliveryPerson().getDeliveryType();
+		DeliveryType deliveryType = order.getDeliveryPerson().getDeliveryType();
 		int deliveryPercentage = getDeliveryPercentage(deliveryType);
 		double deliveryAmount = (order.getTotalAmount() * deliveryPercentage) / 100;
 		recalculateAmount(order, deliveryAmount);
@@ -165,63 +151,33 @@ public class OrderManager {
 		return getDeliveryMessage(deliveryType);
 	}
 
-	private String getDeliveryMessage(String deliveryType) {
+	private String getDeliveryMessage(DeliveryType deliveryType) {
 	
-	String message = "";
-	if(deliveryType.equalsIgnoreCase(DeliveryTypeEnum.ON_FOOT.getDeliveryType())){
-		message = Constants.DeliveryType.ON_FOOT;
-	}else if(deliveryType.equalsIgnoreCase(DeliveryTypeEnum.BICYCLE.getDeliveryType())) {
-		message = Constants.DeliveryType.BICYCLE;
-	}else if(deliveryType.equalsIgnoreCase(DeliveryTypeEnum.MOTORCYCLE.getDeliveryType())) {
-		message = Constants.DeliveryType.MOTORCYCLE;
-	}
-	return message;
+		String message = deliveryType.getMessage();
+
+		return message;
 	}
 	
-	private int getDeliveryPercentage(String deliveryType) {
+	private int getDeliveryPercentage(DeliveryType deliveryType) {
 		
-		int percentage = 0;
-		if(deliveryType.equalsIgnoreCase(DeliveryTypeEnum.ON_FOOT.getDeliveryType())){
-			percentage = DeliveryTypeEnum.ON_FOOT.getPercentage();
-		}else if(deliveryType.equalsIgnoreCase(DeliveryTypeEnum.BICYCLE.getDeliveryType())) {
-			percentage = DeliveryTypeEnum.BICYCLE.getPercentage();
-		}else if(deliveryType.equalsIgnoreCase(DeliveryTypeEnum.MOTORCYCLE.getDeliveryType())) {
-			percentage = DeliveryTypeEnum.MOTORCYCLE.getPercentage();
-		}
+		int percentage = deliveryType.getPercentage();
+
 		return percentage;
 	}
 	
-	public String getGift(String productName) {
+	public String getGift(Product product) {
 		
-		String gift = "";
+		String gift = product.getGift();
 		
-		if(productName.equalsIgnoreCase(ProductEnum.BURRITO.getName())){
-			gift = ProductEnum.BURRITO.getGift();
-		}else if(productName.equalsIgnoreCase(ProductEnum.HAMBURGUER.getName())) {
-			gift = ProductEnum.HAMBURGUER.getGift();
-		}else if(productName.equalsIgnoreCase(ProductEnum.KEBAB.getName())) {
-			gift = ProductEnum.KEBAB.getGift();
-		}else if(productName.equalsIgnoreCase(ProductEnum.PIZZA.getName())) {
-			gift = ProductEnum.PIZZA.getGift();
-		}
 		
 		return gift;
 	}
 	
-	
-	
-	// Option 2 switch methods.
-	@SuppressWarnings("static-access")
 	public Order findOrder(int orderId) {
-		
-		Order order = null;
-		for(int i = 0; i < orders.size(); i++) {
-			if(orderId == orders.get(i).getOrderId()) {
-				order = orders.get(i);
-				break;
-			}
-		}
-		return order;
+	    return orders.stream()
+	                 .filter(order -> orderId == order.getOrderId())
+	                 .findFirst()
+	                 .orElse(null);
 	}
 	
 	public String flagOrderAsDelivered(Order order) {
@@ -255,12 +211,9 @@ public class OrderManager {
 
 	private boolean checkIfPendingOrders() {
 	
-	for(int i = 0; i < orders.size(); i++) {
-		if(!orders.get(i).isDelivered()) {
-			return true;
-		}
-	}
-	return false;
+		boolean anyPending = orders.stream()
+				 				   .anyMatch(order -> !order.isDelivered());
+		return anyPending;
 	}
 	
 	// Option 4 switch methods.
@@ -274,12 +227,10 @@ public class OrderManager {
 	}
 	
 	private boolean checkIfDeliveredOrders() {
-		
-		for(int i = 0; i < orders.size(); i++) {
-			if(orders.get(i).isDelivered()) {
-				return true;
-			}
-		}
-		return false;
+	
+		boolean anyDelivered = orders.stream()
+                					 .anyMatch(Order::isDelivered);
+
+		return anyDelivered;
 	}
 }

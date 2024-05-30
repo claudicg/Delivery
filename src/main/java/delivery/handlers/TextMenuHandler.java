@@ -1,6 +1,6 @@
 package delivery.handlers;
 
-import delivery.enums.ProductEnum;
+import delivery.beans.Product;
 import delivery.utils.Constants;
 
 public class TextMenuHandler {
@@ -19,10 +19,10 @@ public class TextMenuHandler {
 	public static String getAddProductsMenu() {
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append("1: ").append(ProductEnum.BURRITO.getName()).append("\n");
-		sb.append("2: ").append(ProductEnum.HAMBURGUER.getName()).append("\n");
-		sb.append("3: ").append(ProductEnum.KEBAB.getName()).append("\n");
-		sb.append("4: ").append(ProductEnum.PIZZA.getName()).append("\n");
+		sb.append("1: ").append(Product.BURRITO.getName()).append("\n");
+		sb.append("2: ").append(Product.HAMBURGUER.getName()).append("\n");
+		sb.append("3: ").append(Product.KEBAB.getName()).append("\n");
+		sb.append("4: ").append(Product.PIZZA.getName()).append("\n");
 		sb.append("0: Exit.\n\n");
 		return sb.toString();
 	}

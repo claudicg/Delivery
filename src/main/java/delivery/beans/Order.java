@@ -10,7 +10,7 @@ public class Order {
 	private int orderId;
 	private static int orderIdNext = 1;
 	private Customer customer;
-	private List<String> productNames;
+	private List<Product> products;
 	private DeliveryPerson deliveryPerson;
 	private double totalAmount;
 	private boolean delivered;
@@ -20,7 +20,7 @@ public class Order {
 		this.orderId = orderIdNext;
 		Order.orderIdNext++;
 		this.customer = customer;
-		this.productNames = new ArrayList<>();
+		this.products = new ArrayList<>();
 		this.deliveryPerson = deliveryPerson;
 	}
 
@@ -36,12 +36,12 @@ public class Order {
 		this.customer = customer;
 	}
 
-	public List<String> getProductNames() {
-		return productNames;
+	public List<Product> getProducts() {
+		return products;
 	}
 
-	public void setProductNames(List<String> productNames) {
-		this.productNames = productNames;
+	public void setProductNames(List<Product> products) {
+		this.products = products;
 	}
 
 
@@ -82,7 +82,7 @@ public class Order {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append("=== Order Id: ").append(orderId).append(" ===\n\n");
-		for(String product: productNames) {
+		for(Product product: products) {
 			sb.append("- ").append(product).append("\n");
 			sb.append("gift: " + orderManager.getGift(product)).append("\n");
 		}

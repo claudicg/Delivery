@@ -4,17 +4,17 @@ import java.util.List;
 
 import delivery.beans.Customer;
 import delivery.beans.DeliveryPerson;
-import delivery.enums.DeliveryTypeEnum;
+import delivery.beans.DeliveryType;
 
 public class DataTest {
 	
-public void addDeliveryPersons(List<DeliveryPerson> availableForDeliveryPersons) {
+	public void addDeliveryPersons(List<DeliveryPerson> availableForDeliveryPersons) {
 		
-		DeliveryPerson person1 = new DeliveryPerson("Joan Garrido", DeliveryTypeEnum.ON_FOOT.getDeliveryType());
+		DeliveryPerson person1 = new DeliveryPerson("Joan Garrido", DeliveryType.ON_FOOT);
 		availableForDeliveryPersons.add(person1);
-		DeliveryPerson person2 = new DeliveryPerson("Carmen Salcedo", DeliveryTypeEnum.BICYCLE.getDeliveryType());
+		DeliveryPerson person2 = new DeliveryPerson("Carmen Salcedo", DeliveryType.BICYCLE);
 		availableForDeliveryPersons.add(person2);
-		DeliveryPerson person3 = new DeliveryPerson("José Pizarro", DeliveryTypeEnum.MOTORCYCLE.getDeliveryType());
+		DeliveryPerson person3 = new DeliveryPerson("José Pizarro", DeliveryType.MOTORCYCLE);
 		availableForDeliveryPersons.add(person3);
 	}
 	
